@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--nested TypedArray-->
+    <array name="cocktails">
+        <item>@array/faust</item>
+        <item>@array/old_fasioned</item>
+        <item>@array/manhattan</item>
+        <item>@array/moscow_mule</item>
+        <item>@array/czech_gimlet</item>
+        <item>@array/laurel_forest</item>
+    </array>
+
+    <array name="faust">
+        <item>@drawable/img_null</item>
+        <item>파우스트</item>
+        <item>럼</item>
+    </array>
+    <array name="old_fasioned">
+        <item>@drawable/img_old_fashioned</item>
+        <item>올드 패션드</item>
+        <item>위스키</item>
+    </array>
+    <array name="manhattan">
+        <item>@drawable/img_null</item>
+        <item>맨해튼</item>
+        <item>위스키</item>
+    </array>
+    <array name="moscow_mule">
+        <item>@drawable/img_null</item>
+        <item>모스코 뮬</item>
+        <item>보드카</item>
+    </array>
+    <array name="czech_gimlet">
+        <item>@drawable/img_null</item>
+        <item>체코 김렛</item>
+        <item>압생트</item>
+    </array>
+    <array name="laurel_forest">
+        <item>@drawable/img_null</item>
+        <item>조엽수림</item>
+        <item>-</item>
+    </array>
+
+</resources>

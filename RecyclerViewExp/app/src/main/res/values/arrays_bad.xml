@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<array name="nation_flag">-->
+        <!--<item>@drawable/l_flag_belgium</item>-->
+        <!--<item>@drawable/l_flag_argentina</item>-->
+        <!--<item>@drawable/l_flag_brazil</item>-->
+        <!--<item>@drawable/l_flag_canada</item>-->
+        <!--<item>@drawable/l_flag_china</item>-->
+    <!--</array>-->
+    <!--<string-array name="nation_name">-->
+        <!--<item>벨기에</item>-->
+        <!--<item>아르헨티나</item>-->
+        <!--<item>브라질</item>-->
+        <!--<item>캐나다</item>-->
+        <!--<item>중국</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="nation_capital">-->
+        <!--<item>브뤼셀</item>-->
+        <!--<item>부에노스아이레스</item>-->
+        <!--<item>브라질리아</item>-->
+        <!--<item>오타와</item>-->
+        <!--<item>베이징</item>-->
+    <!--</string-array>-->
+</resources>
