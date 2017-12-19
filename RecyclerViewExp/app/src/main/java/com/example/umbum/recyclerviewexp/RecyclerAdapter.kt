@@ -23,8 +23,6 @@ class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
 class RecyclerAdapter(private val context: Context, private val items: List<ItemData>)
     : RecyclerView.Adapter<ViewHolder>() {
-    // 1. view를 inflate 하기 위해서는 일단 아래처럼 inflate를 먼저 얻어와야 한다.
-    private val mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     lateinit var onItemClick: (View?) -> Unit
 
     override fun getItemCount(): Int = items.size
@@ -40,12 +38,14 @@ class RecyclerAdapter(private val context: Context, private val items: List<Item
         holder.thumb_img.setImageResource(items[position].imgId)
     }
 
-        /* viewType에 따라 딱 한 번만 호출되기 때문에 일반적인 경우 ViewHolder는 하나라고 보면 됨. */
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            // 2. inflate 할 view(xml)을 지정한다. 이 경우 ViewHolder에 끼워질 아이템들의 레이아웃을 지정.
-            val mainView = mInflater.inflate(R.layout.layout_item, parent, false)
-            // 3. 아이템을 클릭했을 때 어떻게 반응할 것인지 리스너 지정
-            mainView.setOnClickListener(onItemClick)
+    /* viewType에 따라 딱 한 번만 호출되기 때문에 일반적인 경우 ViewHolder는 하나라고 보면 됨. */
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        // 1. view를 inflate한다. inflate한다는건 view(xml)대로 layout(틀)을 만드는 과정이라고 생각하면 된다.
+        val mainView = inflater.inflate(R.layout.layout_item, parent, false)
+        // 2. 아이템을 클릭했을 때 어떻게 반응할 것인지 리스너 지정
+        mainView.setOnClickListener(onItemClick)
+        // 3. inflate한 틀에 리소스를 채워넣는 작업은 findViewById()를 통해 이루어지는데, 여기서는 ViewHolder 클래스에서 처리한다.
         return ViewHolder(mainView)
     }
 
