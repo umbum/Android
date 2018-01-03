@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -34,34 +35,36 @@ class AddUserActivity: AppCompatActivity() {
     }
 
     @Suppress("UNUSED_PARAMETER")
-    fun onClickImage(v: View?) {
-        // 6.0 이상이면 권한이 있는지 체크.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED)) {
-            // 사용자에게 권한에 대한 설명이 필요한 경우인지를 체크. ( 이전에 거절했거나... )
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, "퍼미션 거절했으므로 external storage에 접근 불가!", Toast.LENGTH_SHORT).show()
-                /** 여기서 그냥 제한된 기능으로 계속 진행할거면 startActivity.(MediaStore에는 접근 가능하지만 external storage 리소스에는 접근할 수 없음.)
-                다시 사용자한테 권한 요청할거면 requestPermissions.*/
-                startActivityForResult(
-                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
-                        PICK_IMAGE)
-//                ActivityCompat.requestPermissions(this,
-//                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSION)
-            }
-            else {
-                /** 권한 요청 팝업을 띄운다. 이후 팝업 종료 시 onReqeustPermissionsResult가 호출.
-                단, 다시 보지 않기를 체크하고 거절한 경우 팝업이 뜨지 않고 자동으로 거절로 처리된다.*/
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSION)
-            }
+    fun onClickImage(view: View?) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions()
         }
         else {
-            // 암시적 인텐트.
+            // 암시적 인텐트
             startActivityForResult(
                     Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
                     PICK_IMAGE)
+        }
+    }
+
+    private fun requestPermissions() {
+        /** 사용자에게 권한에 대한 설명이 필요한 경우인지를 체크.
+         * 한 번 거절하게 되면 권한에 대한 설명이 필요한 경우가 되어 Snackbar 쪽으로 들어가는데,
+         * 거기서 또 다시 보지 않기를 체크하고 거절한 경우 이후에는 알아서 거절한 것으로 간주됨. */
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            /* Toast는 ActivityComapt.requestPermissions이 뜨면서 사라져버려서, Snackbar로 처리.
+            * MediaStore Activity에 Snackbar를 띄우면 좋을 것 같지만, View를 얻을 수 없어 불가능한 듯. */
+            Snackbar.make(findViewById(android.R.id.content), "거절하면 external storage에는 접근할 수 없음. ㅇㅋ?", Snackbar.LENGTH_LONG)
+                    .setAction("SET", { _ ->
+                        ActivityCompat.requestPermissions(this,
+                                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSION)
+                    })
+                    .show()
+        }
+        else {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_PERMISSION)
         }
     }
 
@@ -70,26 +73,37 @@ class AddUserActivity: AppCompatActivity() {
         when (requestCode) {
             REQ_PERMISSION -> {
                 if (grantResults.size > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    // 거절일 때.
-                    AlertDialog.Builder(this).setTitle("권한 설정")
-                            .setMessage("거절하면 external storage 접근 못함 ㅅㄱ\n 설정하는걸 추천")
-                            .setCancelable(true)
-                            .setPositiveButton("설정") {
-                                _, _ -> showSetting()
-                            }
-                            .create().show()
+                    // 거절일 때. 제한된 권한으로 그냥 진행.
+                    Toast.makeText(this, "external storage에는 접근할 수 없음.", Toast.LENGTH_LONG).show()
+                    startActivityForResult(
+                            Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+                            PICK_IMAGE)
                 }
             }
         }
     }
 
-    fun showSetting() {
-        startActivity(
-                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
-                        .apply {
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        })
+    /* 직접 SettingDialog를 띄워 유도하는 방식인데, 반드시 필요한 권한이 아니라면 굳이 안써도 될 것 같음.
+    private fun showSettingDialog() {
+        AlertDialog.Builder(this)
+                .setTitle("권한 설정")
+                .setMessage("거절하면 external storage에 접근 못함 ㅅㄱ\n설정? 그냥 진행?")
+                .setPositiveButton("SETTING", { _, _ ->
+                    startActivity(
+                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
+                                    .apply {
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    })
+                })
+                .setNegativeButton("IGNORE", { _, _->
+                    startActivityForResult(
+                            Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
+                            PICK_IMAGE)
+                })
+                .setCancelable(true)
+                .create().show()
     }
+    */
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

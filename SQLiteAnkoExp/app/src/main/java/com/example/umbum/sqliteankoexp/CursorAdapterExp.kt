@@ -26,7 +26,9 @@ class ViewHolder(v: View) {
     val del = v.findViewById(R.id.del_item) as ImageView
 }
 
-/* Cursor를 받아서 Cursor를 이용해 데이터를 얻어내고 이를 View에 넣어 그린다. */
+/* Cursor를 받아서 Cursor를 이용해 데이터를 얻어내고 이를 View에 넣어 그린다.
+!! CursorAdapter 사용시 커서에 반드시 _id 컬럼이 포함되어 있어야 한다.
+   단, 테이블 자체의 컬럼 이름이 _id여야 할 필요는 없고 쿼리 시 AS _id로 이름만 변경해주거나, CursorWrapper를 사용하면 된다. */
 class CursorAdapterExp(val mCtx: Context, cursor: Cursor?)
     : CursorAdapter(mCtx, cursor, FLAG_REGISTER_CONTENT_OBSERVER) {
 

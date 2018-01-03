@@ -1,8 +1,10 @@
 /** 다음 항목을 포함하는 예제
- * anko-sqlite (+ native sqlite) / CursorAdapter
+ * anko-sqlite (+ native sqlite)
+ * CursorAdapter
  * ListView & ViewHolder 패턴 ( RecyclerView를 사용하는게 더 낫다. )
  * ActionBar 비활성화, ToolBar 사용.
  * MediaStore 접근 시 EXTERNAL_STORAGE 권한 요청, 권한 체크, 암시적 인텐트
+ * Snackbar ( design library 추가해야 함. ) + 한계
  */
 
 
