@@ -12,27 +12,40 @@ import com.example.umbum.openweatherexp.data.WeatherForecast
 import com.squareup.picasso.Picasso
 
 class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
-    val descript = v.findViewById(R.id.descript) as TextView
+    val cityName = v.findViewById(R.id.city_name) as TextView
     val weatherIcon = v.findViewById(R.id.weather_icon) as ImageView
     val currentTemp = v.findViewById(R.id.current_temp) as TextView
     val highLowTemp = v.findViewById(R.id.high_low_temp) as TextView
-    val cityName = v.findViewById(R.id.city_name) as TextView
+
+    val descript = v.findViewById(R.id.descript) as TextView
     val humidity = v.findViewById(R.id.humidity) as TextView
     val cloud = v.findViewById(R.id.cloud) as TextView
     val wind = v.findViewById(R.id.wind) as TextView
+    val snowOrRain = v.findViewById(R.id.snow_or_rain) as TextView
+
     val forecast = v.findViewById(R.id.forecast) as ForecastView
     val delBtn = v.findViewById(R.id.del_btn) as ImageButton
 
     fun bindHolder(context: Context, data: WeatherForecast, delClick: (View) -> Unit) {
         with (data) {
-            descript.text = day.weather.description
+            cityName.text = day.name
             Picasso.with(context).load(iconUrl+day.weather.icon+".png").into(weatherIcon)
             currentTemp.text = "${day.main.temp} \u2103"
             highLowTemp.text = "${day.main.temp_min} \u2103 / ${day.main.temp_max} \u2103"
-            cityName.text = day.name
-            cloud.text = "${day.clouds.all} %"
-            humidity.text = "${day.main.humidity} %"
-            wind.text = day.wind.speed
+
+            descript.text = day.weather.description
+            humidity.text = "습도 : ${day.main.humidity} %"
+            cloud.text = "구름 : ${day.clouds.all} %"
+            wind.text = "풍속 : ${day.wind.speed}"
+
+            if (week.list[30].snow?.get("3h") != null) {
+                snowOrRain.text = "눈 : " + week.list[30].snow?.get("3h")
+                snowOrRain.setVisibility(View.VISIBLE)
+            }
+            else if (week.list[0].rain?.get("3h") != null) {
+                snowOrRain.text = "비 : " + week.list[0].rain?.get("3h")
+                snowOrRain.setVisibility(View.VISIBLE)
+            }
 
             forecast.setView(week.list, iconUrl)
             delBtn.setOnClickListener(delClick)

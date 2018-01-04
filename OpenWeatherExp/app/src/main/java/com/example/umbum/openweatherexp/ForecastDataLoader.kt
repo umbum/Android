@@ -31,8 +31,7 @@ class ForecastDataLoader(context: Context, val cities: ArrayList<CityData>)
             val forecastURL = FORECAST_URL+city.api_id+"&units=metric&APPID=${API_KEY}"
             val forecastJson = URL(forecastURL).readText()
             val week = Gson().fromJson(forecastJson, WeekList::class.java)
-            log("WeekData : " + week.list[0].weather.description)
-
+            log("SnowData : " + week.list[0].snow?.get("3h"))
             val forecast = WeatherForecast(day, week, ICON_URL)
             city_weather.add(forecast)
         }

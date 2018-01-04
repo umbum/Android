@@ -32,111 +32,85 @@
                             android:layout_weight="1"
                             android:layout_marginRight="20dp">
                         <TextView
-                                android:id="@+id/descript"
+                                android:id="@+id/city_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:textSize="15dp"
                                 android:textColor="#323232"
-                                android:text="test_text"/>
+                                android:text="city_name"/>
                         <LinearLayout
                                 android:orientation="horizontal"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/brief_info"
-                                android:layout_below="@+id/descript">
+                                android:layout_below="@+id/city_name">
                             <ImageView
                                     android:layout_width="60dp"
                                     android:layout_height="60dp"
                                     android:id="@+id/weather_icon"/>
-                            <TextView
-                                    android:text="current_temp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/current_temp"/>
+                            <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+                                <TextView
+                                        android:text="current_temp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/current_temp" android:layout_weight="1"/>
+                                <TextView
+                                        android:text="high_low_temp"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/high_low_temp"
+                                        android:layout_weight="1"/>
+                            </LinearLayout>
                         </LinearLayout>
-                        <TextView
-                                android:text="high_low_temp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/high_low_temp"
-                                android:layout_weight="1"/>
                     </LinearLayout>
 
                     <LinearLayout
                             android:orientation="vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.8">
+                            android:layout_weight="3">
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/city_name"
-                                android:textSize="15dp"
+                                android:id="@+id/descript"
+                                android:text="descript"
+                                android:textSize="14dp"
                                 android:textColor="@android:color/black"
                                 android:layout_marginBottom="10dp"/>
-                        <LinearLayout
-                                android:orientation="horizontal"
+                        <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent">
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/humidity_title"
-                                    android:text="습도: "
-                                    android:textColor="@android:color/black"
-                                    android:textSize="12dp"
-                                    android:layout_marginBottom="5dp"/>
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/humidity"
-                                    android:layout_marginBottom="5dp"
-                                    android:textSize="12dp"/>
-                        </LinearLayout>
-                        <LinearLayout
-                                android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/cloud_title"
-                                    android:text="구름의 양: "
-                                    android:textColor="@android:color/black"
-                                    android:textSize="12dp"
-                                    android:layout_marginBottom="5dp"/>
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/cloud"
-                                    android:layout_marginBottom="5dp"
-                                    android:textSize="12dp"/>
-                        </LinearLayout>
-                        <LinearLayout
-                                android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/wind_title"
-                                    android:text="풍속: "
-                                    android:textColor="@android:color/black"
-                                    android:textSize="12dp"
-                                    android:layout_marginBottom="5dp"/>
-                            <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/wind"
-                                    android:layout_marginBottom="5dp"
-                                    android:textSize="12dp"/>
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:id="@+id/humidity"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="12dp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/cloud"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="12dp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/wind"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="12dp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/snow_or_rain"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="12dp"
+                                android:visibility="gone"/>
                     </LinearLayout>
                     <ImageButton
                             android:layout_height="wrap_content"
                             android:background="@android:drawable/ic_delete"
-                            android:id="@+id/del_btn" android:layout_weight="0.1"
+                            android:id="@+id/del_btn" android:layout_weight="0.05"
                             android:layout_width="wrap_content"
                     />
                 </LinearLayout>
