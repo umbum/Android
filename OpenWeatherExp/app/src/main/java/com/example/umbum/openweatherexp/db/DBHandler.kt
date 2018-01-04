@@ -17,27 +17,24 @@ const val DB_NAME = "user.db"
 const val DB_VERSION = 1
 
 
-//refac. 중복된 city 추가하면 중복 그대로 들어가버림. 그래서 api_id를 primary key로 사용하면 이럴 일이 없을 것 같은데;;
 class DBHandler private constructor(context: Context)
     : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
     companion object {
         @Volatile private var INSTANCE: DBHandler? = null
 
         fun getInstance(context: Context): DBHandler =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: DBHandler(context).also { INSTANCE = it }
+                INSTANCE ?: synchronized (this) {
+                     INSTANCE ?: DBHandler(context.applicationContext).also { INSTANCE = it }
                 }
     }
 
     val TABLE_NAME = "city"
-    val ID = "_id"
     val API_ID = "api_id"
     val NAME = "name"
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.createTable(TABLE_NAME, true,
-                 ID to INTEGER+PRIMARY_KEY,
-                API_ID to TEXT,
+                API_ID to INTEGER + PRIMARY_KEY + UNIQUE,
                 NAME to TEXT)
     }
 

@@ -1,8 +1,8 @@
 /** 다음을 포함하는 예제
+ * openweather API
  * RecyclerView & ArrayAdapter
  * GSON + @SerializedName
- * anko-sqlite
- * openweather API
+ * Singleton anko-sqlite with applicationContext
  * AsyncTaskLoader ( background task ) support.v4에 있는 거니까 다른거 import하지 않게 주의.
  * Custom View
  **/
@@ -33,17 +33,20 @@ inline fun log(s: String) {
 }
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<WeatherForecast>>{
-
-    // refac.
     var mAdapter: WeatherListViewAdapter? = null
     var mWeatherData: ArrayList<WeatherForecast>? = null
     val mCityArray = ArrayList<CityData>()
-    val mDBHandler = DBHandler.getInstance(this)
+    /* onCreate 이전에는 Activity Context가 제대로 초기화되기 이전이므로,
+    this를 사용해 멤버에 접근하면 NPE가 발생할 수 있다.
+    따라서 이 시점에서는 this를 통해 접근해야 하는 applicationContext를 사용할 수 없다. */
+    lateinit var mDBHandler: DBHandler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mDBHandler = DBHandler.getInstance(this)
 
         log("MainActivity.onCreate()")
         mCityArray.addAll(mDBHandler.getCityDataAll())
@@ -78,8 +81,6 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayLis
             weather_list.layoutManager = LinearLayoutManager(this)
             mWeatherData = data
         }
-//        refac. 여기서 addAll을 왜해??
-//        mWeatherData?.addAll(data)
         progress_bar.visibility = View.GONE
         mAdapter?.updateData(data)
         log("MainActivity:AsyncTaskLoader.onLoadFinished done")
