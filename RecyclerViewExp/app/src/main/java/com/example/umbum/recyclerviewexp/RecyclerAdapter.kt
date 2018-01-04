@@ -42,11 +42,11 @@ class RecyclerAdapter(private val context: Context, private val items: List<Item
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         // 1. xml layout을 불러와 inflate해서 View를 만든다.
-        val mainView = inflater.inflate(R.layout.layout_item, parent, false)
+        val itemView = inflater.inflate(R.layout.layout_item, parent, false)
         // 2. 아이템을 클릭했을 때 어떻게 반응할 것인지 리스너 지정
-        mainView.setOnClickListener(onItemClick)
+        itemView.setOnClickListener(onItemClick)
         // 3. View를 ViewHolder로 감싼다.
-        return ViewHolder(mainView)
+        return ViewHolder(itemView)
     }
 
     /* 자동으로 setter가 설정되기는 하지만, 다른 Listener 함수처럼 = 대입이 아닌 함수 형태로 제공하기 위해서. */

@@ -1,6 +1,6 @@
 /**
  * 다음 항목을 포함하는 예제.
- * RecyclerView : 추가 정보 http://thdev.tech/androiddev/2016/11/01/Android-RecyclerView-intro.html
+ * RecyclerView : RecyclerView.Adapter<ViewHolder>와 ViewHolder
  * XML nested TypedArray : MainActivity의 resources는 이 방식으로 처리.
  * JSON -> GSON parsing  : DetailActivity의 resources는 이 방식으로 처리.
  * kotlin-android-extensions(kotlinx) : findViewById() 대체
