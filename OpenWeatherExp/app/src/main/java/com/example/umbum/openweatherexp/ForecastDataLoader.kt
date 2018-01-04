@@ -18,25 +18,24 @@ class ForecastDataLoader(context: Context, val cities: ArrayList<CityData>)
     : AsyncTaskLoader<ArrayList<WeatherForecast>>(context) {
 
     override fun loadInBackground(): ArrayList<WeatherForecast> {
-        log("ForecastDataLoader.loadInBackground start")
+        log("ForecastDataLoader.loadInBackground")
         val city_weather = ArrayList<WeatherForecast>()
         for (city in cities) {
-            val weatherUrl = WEATHER_URL+city.api_id+"&units=metric&APPID=${API_KEY}"
             // 원래 InputStreamreader, openStream 해야 하지만 .readText() 확장 함수를 사용하면 간단히 처리 가능.
+            val weatherUrl = WEATHER_URL+city.api_id+"&units=metric&APPID=${API_KEY}"
             val weatherJson = URL(weatherUrl).readText()
             val day = Gson().fromJson(weatherJson, DayData::class.java)
-            day.name = city.name // day.name은 영문이니까.
-            log("Daydata:"+day.weather.description)
-//            day.id = city.id // 할 필요 없어 보이는데 refac.
+            day.name = city.name        // day.name은 영문이니까.
+            log("Daydata : "+day.weather.description)
 
             val forecastURL = FORECAST_URL+city.api_id+"&units=metric&APPID=${API_KEY}"
             val forecastJson = URL(forecastURL).readText()
             val week = Gson().fromJson(forecastJson, WeekList::class.java)
-            log("WeekData: : " + week.list[0])
+            log("WeekData : " + week.list[0].weather.description)
+
             val forecast = WeatherForecast(day, week, ICON_URL)
             city_weather.add(forecast)
         }
-        log("ForecastDataLoader.loadInBackground return")
         return city_weather
     }
 }

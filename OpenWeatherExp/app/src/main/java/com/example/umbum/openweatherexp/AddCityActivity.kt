@@ -10,7 +10,7 @@ import com.example.umbum.openweatherexp.db.DBHandler
 import com.google.gson.Gson
 import java.io.InputStreamReader
 
-class SelectCityActivity : AppCompatActivity() {
+class AddCityActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class SelectCityActivity : AppCompatActivity() {
         city_list.setOnItemClickListener { adapterView, view, i, l ->
             val text = view.findViewById(R.id.city_name) as TextView
             saveData(view.tag as String, text.text as String)
-            setResult(SELECTED_CITY)
+            setResult(ADD_CITY)
             finish()
         }
     }

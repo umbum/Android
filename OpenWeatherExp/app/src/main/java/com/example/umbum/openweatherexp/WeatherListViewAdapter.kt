@@ -41,24 +41,23 @@ class ViewHolder(v: View): RecyclerView.ViewHolder(v) {
     }
 }
 
-class WeatherListViewAdapter(val context: Context, val data: ArrayList<WeatherForecast>)
+/* 추후 data를 update하더라도, 일단 생성자로 data를 받는게 다른 Adapter 형식과의 일관성을 유지할 수 있는 듯. */
+class WeatherListViewAdapter(private val context: Context, data: ArrayList<WeatherForecast>)
     : RecyclerView.Adapter<ViewHolder>() {
-    // 뭐야? data가 이미 있는데 여기서 왜 또 넣는거지? refac. 전체적으로 mWeatherData를 사용해서 refac해야함.
-    val mWeatherData = ArrayList<WeatherForecast>(data)
     lateinit var delBtnClickListener: (View) -> Unit
+    val mItemList: ArrayList<WeatherForecast> = data
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.layout_card, parent, false)
-        return ViewHolder(view)
+        val cardItemView = inflater.inflate(R.layout.layout_card, parent, false)
+        return ViewHolder(cardItemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        val data = mWeatherData[position]
-        holder?.bindHolder(context, data, delBtnClickListener)
+        holder?.bindHolder(context, mItemList[position], delBtnClickListener)
     }
 
-    override fun getItemCount(): Int = mWeatherData.size
+    override fun getItemCount(): Int = mItemList.size
 
     // setter가 존재하기는 하지만, =으로 대입해야 하니까 다른 listener 함수 처럼 함수 형태로 제공하기 위해.
     fun setDeleteClickListener(listener: (View) -> Unit) {
@@ -66,19 +65,13 @@ class WeatherListViewAdapter(val context: Context, val data: ArrayList<WeatherFo
     }
 
     fun updateData(newData: ArrayList<WeatherForecast>) {
-        mWeatherData.clear()
-        mWeatherData.addAll(newData)
+        mItemList.clear()
+        mItemList.addAll(newData)
         notifyDataSetChanged()
     }
 
-    // 여기도 무조건 refac. 대상이네.
     fun removeData(api_id: String) {
-        for (i in mWeatherData) {
-            if (i.day.id == api_id) {
-                mWeatherData.remove(i)
-                break
-            }
-        }
+        mItemList.remove(mItemList.find { it.day.id == api_id })
         notifyDataSetChanged()
     }
 
