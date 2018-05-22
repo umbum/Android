@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BTreceiveSMSsend</string>
+    <string name="title_activity_main">BTreceiveSMSsend</string>
+    <string name="title_activity_connect">ConnectActivity</string>
+    <string name="app_uuid">00001101-0000-1000-8000-00805F9B34FB</string>
+    <string name="dst_phone">01000000000</string>
+    <string name="sms_text">사망</string>
+</resources>
